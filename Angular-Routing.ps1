@@ -1,5 +1,5 @@
-$readDir = "C:\Users\Lily\source\repos\Echocondria\src\app\pages"
-$writeFile = "C:\Users\Lily\source\repos\Echocondria\src\app\app-routing.module.ts"
+$readDir = "C:\repos\AngularApp\src\app\pages"
+$writeFile = "C:\repos\AngularApp\src\app\app-routing.module.ts"
 $list = Get-ChildItem -Path $readDir -Directory -Recurse -Force
 $TextInfo = (Get-Culture).TextInfo
 
