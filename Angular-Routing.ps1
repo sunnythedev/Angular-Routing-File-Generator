@@ -31,7 +31,7 @@ ForEach($n in $list){
     "
 }
 
-Copy-Item $writeFile -Destination $writeFile+".backup"
+Copy-Item $writeFile -Destination $writeFile".backup"
 
 $final = $imports + $routes + $end
 $final | Out-File $writeFile
