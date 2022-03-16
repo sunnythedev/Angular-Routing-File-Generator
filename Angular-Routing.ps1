@@ -1,13 +1,15 @@
-$readDir = "C:\repos\AngularApp\src\app\pages"
-$writeFile = "C:\repos\AngularApp\src\app\app-routing.module.ts"
+$readDir = "C:\repos\AngularSite\src\app\pages"
+$writeFile = "C:\repos\AngularSite\src\app\app-routing.module.ts"
 $list = Get-ChildItem -Path $readDir -Directory -Recurse -Force
 $TextInfo = (Get-Culture).TextInfo
 
-$routes = "const routes: Routes = [
-  "
 
 $imports = "import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';"
+import { RouterModule, Routes } from '@angular/router';
+"
+
+$routes = "const routes: Routes = [
+"
 
 $end = "];
 @NgModule({
@@ -19,6 +21,8 @@ export class AppRoutingModule { }"
 ForEach($n in $list){
   $componentName = $TextInfo.ToTitleCase($n.Name) + "Component"
   $componentName = $componentName.Replace("-","")
+  $relative = $n.FullName.Substring($Root.Length)
+  $relative = $relative.Replace($readDir,"")
   $parent = $n.Parent
   if($parent.Name -eq "pages"){
     $parent = ""
@@ -26,14 +30,14 @@ ForEach($n in $list){
     $parent = $parent.Name + "/"
   }
   $imports += "import { " + $componentName + " } from './pages/" + $parent + $n.Name + "/"+ $n.Name + ".component';
-    "
-  $routes += "{ path: '"+$n.Name+"', component: "+$componentName + " },
-    "
+"
+  $routes += "{ path: '"+$relative+"', component: "+$componentName + " },
+"
 }
 
 Copy-Item $writeFile -Destination $writeFile".backup"
 
 $final = $imports + $routes + $end
-$final | Out-File $writeFile
-
-Invoke-Expression $writeFile
+print $final
+Pause
+#$final | Out-File $writeFile
