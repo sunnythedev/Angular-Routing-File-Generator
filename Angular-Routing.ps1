@@ -1,5 +1,7 @@
-$readDir = "C:\repos\AngularSite\src\app\pages"
-$writeFile = "C:\repos\AngularSite\src\app\app-routing.module.ts"
+$readDir = "C:\Users\Lily\source\repos\Echocondria\src\app\pages"
+$writeFile = "C:\Users\Lily\source\repos\Echocondria\src\app\app-routing.module.ts"
+#$readDir = "C:\repos\AngularSite\src\app\pages"
+#$writeFile = "C:\repos\AngularSite\src\app\app-routing.module.ts"
 $list = Get-ChildItem -Path $readDir -Directory -Recurse -Force
 $TextInfo = (Get-Culture).TextInfo
 
@@ -22,7 +24,8 @@ ForEach($n in $list){
   $componentName = $TextInfo.ToTitleCase($n.Name) + "Component"
   $componentName = $componentName.Replace("-","")
   $relative = $n.FullName.Substring($Root.Length)
-  $relative = $relative.Replace($readDir,"")
+  $relative = $relative.Replace($readDir,"")  
+  $relative = $relative.Replace("\","/")
   $parent = $n.Parent
   if($parent.Name -eq "pages"){
     $parent = ""
@@ -38,6 +41,7 @@ ForEach($n in $list){
 Copy-Item $writeFile -Destination $writeFile".backup"
 
 $final = $imports + $routes + $end
-print $final
+#print $final
+$final | Out-File $writeFile
+write-output "routing file saved"
 Pause
-#$final | Out-File $writeFile
